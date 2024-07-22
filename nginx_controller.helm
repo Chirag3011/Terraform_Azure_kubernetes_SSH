@@ -1,0 +1,14 @@
+helm install internal-nginx-ingress ingress-nginx/ingress-nginx \
+--namespace default \
+--set controller.replicaCount=1 \
+--set controller.nodeSelector."kubernetes\.io/os"=linux \
+--set controller.admissionWebhooks.patch.nodeSelector."kubernetes\.io/os"=linux \
+--set controller.service.loadBalancerIP="4.213.198.139" \
+--set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal"=true \
+--set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz \
+--set controller.service.annotations."service\.beta\.kubernetes\.io/port_443_no_probe_rule"=true \
+--set controller.service.annotations."service\.beta\.kubernetes\.io/port_80_no_probe_rule"=true \
+--set defaultBackend.nodeSelector."kubernetes\.io/os"=linux \
+--set controller.ingressClass=internal-ingress \
+--set controller.ingressClassResource.name=internal-ingress \
+--set controller.ingressClassResource.controllerValue="k8s.io/internal-ingress-nginx" --debug
